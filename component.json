@@ -7,6 +7,9 @@
     "components"
   ],
   "dependencies": {
-    "d3": "~3.2.8"
+    "d3": "~3.2.8",
+    "rickshaw": "~1.4.0",
+    "sammy": "~0.7.4",
+    "mustache": "~0.7.2"
   }
 }
