@@ -1,38 +1,39 @@
 {
-    "name": "datashaman-d3",
-    "description": "Experiments with D3",
-    "version": "0.1.0",
-    "author": "Marlin Forbes <marlinf@datashaman.com>",
-    "homepage": "https://github.com/datashaman/d3",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/datashaman/d3.git"
-    },
-    "dependencies": {
-        "zappajs": "0.4.x",
-        "commander": "latest",
-        "redis": "latest",
-        "connect": ">= 1.8.5",
-        "connect-redis": ">= 1.2.0"
-    },
-    "keywords": [
-        "zappa",
-        "zappajs",
-        "d3",
-        "leaflet"
-    ],
-    "main": "./cuppa.coffee",
-    "files": [
-        "cuppa.coffee"
-    ],
-    "scripts": {
-        "start": "coffee ./cuppa.coffee"
-    },
-    "engines": {
-        "node": ">=0.8.x",
-        "coffee": ">=1.3.x"
-    },
-    "publishConfig": {
-        "tag": "latest"
-    }
+  "name": "datashaman-d3",
+  "description": "Experiments with D3",
+  "version": "0.1.0",
+  "author": "Marlin Forbes <marlinf@datashaman.com>",
+  "homepage": "https://github.com/datashaman/d3",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/datashaman/d3.git"
+  },
+  "dependencies": {
+    "zappajs": "0.4.x",
+    "commander": "latest",
+    "redis": "latest",
+    "connect": ">= 1.8.5",
+    "connect-redis": ">= 1.2.0",
+    "jsdom": "~0.8.3"
+  },
+  "keywords": [
+    "zappa",
+    "zappajs",
+    "d3",
+    "leaflet"
+  ],
+  "main": "./cuppa.coffee",
+  "files": [
+    "cuppa.coffee"
+  ],
+  "scripts": {
+    "start": "coffee ./cuppa.coffee"
+  },
+  "engines": {
+    "node": ">=0.8.x",
+    "coffee": ">=1.3.x"
+  },
+  "publishConfig": {
+    "tag": "latest"
+  }
 }
