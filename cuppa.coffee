@@ -46,8 +46,8 @@ require('zappajs') ->
             units: parseInt(Math.random() * 2000)
         @app.interval = setInterval(emitData, 500)
 
-    @on realtime: (data) ->
-        if data.value
+    @on realtime: (isOn) ->
+        if isOn
             emitData = => @emit data:
                 units: parseInt(Math.random() * 2000)
             @app.interval = setInterval(emitData, 500)
@@ -59,7 +59,6 @@ require('zappajs') ->
         @connect()
 
         (->
-
             # @use 'Meld'
             @use 'Title'
 
@@ -94,12 +93,10 @@ require('zappajs') ->
                     $('input').click (e) =>
                         button = e.target
                         if $(button).val() == 'Pause'
-                            @app.zappa.emit realtime:
-                                value: false
+                            @app.zappa.emit realtime: false
                             $(button).val('Resume')
                         else
-                            @app.zappa.emit realtime:
-                                value: true
+                            @app.zappa.emit realtime: true
                             $(button).val('Pause')
 
         ).call @app
