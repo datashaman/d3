@@ -41,13 +41,21 @@ require('zappajs') ->
             ]
             postrender: 'appendLog'
 
-    @on
-        connection: ->
+    @on connection: ->
+        emitData = => @emit data:
+            units: parseInt(Math.random() * 2000)
+        @app.interval = setInterval(emitData, 500)
+
+    @on realtime: (data) ->
+        if data.value
             emitData = => @emit data:
                 units: parseInt(Math.random() * 2000)
-            setInterval emitData, 500
+            @app.interval = setInterval(emitData, 500)
+        else
+            clearInterval @app.interval
 
     @client '/index.js': ->
+        @app.zappa = @
         @connect()
 
         (->
@@ -60,7 +68,7 @@ require('zappajs') ->
 
             @get '#/line', ->
                 @title 'Line graph'
-                @partial 'line.html', ->
+                @partial 'line.html', =>
                     window.graph = new Rickshaw.Graph
                         element: document.getElementById('chart')
                         width: 900
@@ -83,6 +91,16 @@ require('zappajs') ->
                         element: document.getElementById('y-axis')
                     yAxis.render()
 
+                    $('input').click (e) =>
+                        button = e.target
+                        if $(button).val() == 'Pause'
+                            @app.zappa.emit realtime:
+                                value: false
+                            $(button).val('Resume')
+                        else
+                            @app.zappa.emit realtime:
+                                value: true
+                            $(button).val('Pause')
 
         ).call @app
 
