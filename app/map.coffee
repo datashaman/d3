@@ -6,11 +6,24 @@
         '#map':
             height: '500px'
 
-    @coffee '/map.js': ->
+    @on connection: ->
+        emitValue = =>
+            lat = 51.505 + (Math.random() * 0.5) - 0.25
+            lng = -0.09 + (Math.random() * 0.5) - 0.25
+            @emit coords: {lat: lat, lng: lng}
+        setInterval emitValue, 500
+
+    @client '/map.js': ->
+        map = null
         apiKey = '46d8b39e9b6f4ab5a6118e74cf1da50d'
 
+        @connect()
+
+        @on coords: ->
+            L.marker([@data.lat, @data.lng]).addTo(map)
+
         $ ->
-            map = L.map('map').setView([51.505, -0.09], 13)
+            map = L.map('map').setView([51.505, -0.09], 11)
 
             L.tileLayer('http://{s}.tile.cloudmade.com/' + apiKey + '/997/256/{z}/{x}/{y}.png',
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
