@@ -22,12 +22,13 @@
     "d3",
     "leaflet"
   ],
-  "main": "./cuppa.coffee",
+  "main": "app/main.coffee",
   "files": [
-    "cuppa.coffee"
+    "app/main.coffee",
+    "app/line.coffee"
   ],
   "scripts": {
-    "start": "coffee ./cuppa.coffee"
+    "start": "coffee app/main.coffee"
   },
   "engines": {
     "node": ">=0.8.x",
