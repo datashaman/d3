@@ -1,3 +1,5 @@
+lorem = require 'lorem'
+
 @include = ->
     @view map: ->
         div id: 'map'
@@ -10,7 +12,10 @@
         emitValue = =>
             lat = 51.505 + (Math.random() * 0.5) - 0.25
             lng = -0.09 + (Math.random() * 0.5) - 0.25
-            @emit coords: {lat: lat, lng: lng}
+            @emit coords:
+                lat: lat
+                lng: lng
+                info: lorem.ipsum('p')
         setInterval emitValue, 500
 
     @client '/map.js': ->
@@ -20,7 +25,8 @@
         @connect()
 
         @on coords: ->
-            L.marker([@data.lat, @data.lng]).addTo(map)
+            marker = L.marker([@data.lat, @data.lng]).addTo(map)
+            marker.bindPopup(@data.info)
 
         $ ->
             map = L.map('map').setView([51.505, -0.09], 11)

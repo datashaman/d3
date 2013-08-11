@@ -9,6 +9,7 @@
   "dependencies": {
     "rickshaw": "~1.4.0",
     "underscore": "~1.5.1",
-    "leaflet": "~0.6.4"
+    "leaflet": "~0.6.4",
+    "lorem": "latest"
   }
 }
