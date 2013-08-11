@@ -1,4 +1,18 @@
 @include = ->
+    @on realtime: (isOn) ->
+        if isOn
+            emitData = => @emit data: {val: parseInt(Math.random() * 2000)}
+            @app.interval = setInterval(emitData, 500)
+        else
+            clearInterval @app.interval
+
+    @view line: ->
+        div id: 'chart-container', ->
+            div id: 'y-axis'
+            div id: 'chart'
+        div id: 'buttons', ->
+            input type: 'button', value: 'Resume'
+
     @css '/line.css':
         '#chart-container':
             position: 'relative'
@@ -13,38 +27,6 @@
             top: 0
             bottom: 0
             width: '40px'
-
-    @view line: ->
-        div id: 'chart-container', ->
-            div id: 'y-axis'
-            div id: 'chart'
-        div id: 'buttons', ->
-            input type: 'button', value: 'Resume'
-
-    @get '/line': ->
-        @render line:
-            title: 'Line Graph'
-            scripts: [
-                '/zappa/Zappa.js',
-
-                '/components/rickshaw/vendor/d3.min.js',
-                '/components/rickshaw/vendor/d3.layout.min.js',
-                '/components/rickshaw/rickshaw.min.js',
-                '/components/underscore/underscore-min.js',
-
-                '/line.js',
-            ]
-            stylesheets: [
-                '/components/rickshaw/rickshaw.min.css',
-                '/line.css',
-            ]
-
-    @on realtime: (isOn) ->
-        if isOn
-            emitData = => @emit data: {val: parseInt(Math.random() * 2000)}
-            @app.interval = setInterval(emitData, 500)
-        else
-            clearInterval @app.interval
 
     @client '/line.js': ->
         graph = null
@@ -91,3 +73,21 @@
                             zappa.emit realtime: true
                             button.val('Pause'))
                     .click()
+
+    @get '/line': ->
+        @render line:
+            title: 'Line Graph'
+            scripts: [
+                '/zappa/Zappa.js',
+
+                '/components/rickshaw/vendor/d3.min.js',
+                '/components/rickshaw/vendor/d3.layout.min.js',
+                '/components/rickshaw/rickshaw.min.js',
+                '/components/underscore/underscore-min.js',
+
+                '/line.js',
+            ]
+            stylesheets: [
+                '/components/rickshaw/rickshaw.min.css',
+                '/line.css',
+            ]
