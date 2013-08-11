@@ -10,7 +10,7 @@ require('zappajs') ->
 
     @enable 'default layout'
 
-    @view index: ->
+    @view page: ->
         div id: 'content'
 
     @postrender
@@ -18,7 +18,7 @@ require('zappajs') ->
             $('body').append('<div id="log" />')
 
     @get '/': ->
-        @render index:
+        @render page:
             scripts: [
                 '/zappa/Zappa.js',
                 # '/components/sammy/lib/plugins/sammy.flash.js',
@@ -41,21 +41,17 @@ require('zappajs') ->
             ]
             postrender: 'appendLog'
 
-    @on connection: ->
-        emitData = => @emit data:
-            units: parseInt(Math.random() * 2000)
-        @app.interval = setInterval(emitData, 500)
-
     @on realtime: (isOn) ->
         if isOn
-            emitData = => @emit data:
-                units: parseInt(Math.random() * 2000)
+            emitData = => @emit data: {val: parseInt(Math.random() * 2000)}
             @app.interval = setInterval(emitData, 500)
         else
             clearInterval @app.interval
 
     @client '/index.js': ->
-        @app.zappa = @
+        graph = null
+        zappa = @
+
         @connect()
 
         (->
@@ -67,42 +63,43 @@ require('zappajs') ->
 
             @get '#/line', ->
                 @title 'Line graph'
-                @partial 'line.html', =>
-                    window.graph = new Rickshaw.Graph
+                @partial 'line.html', ->
+                    graph = new Rickshaw.Graph
                         element: document.getElementById('chart')
                         width: 900
                         height: 500
                         renderer: 'line'
-                        series: new Rickshaw.Series.FixedDuration([{name: 'units'}], undefined, {
+                        series: new Rickshaw.Series.FixedDuration([{name: 'val'}], undefined, {
                             timeInterval: 500,
                             maxDataPoints: 100
                         })
-                    window.graph.render()
 
                     xAxis = new Rickshaw.Graph.Axis.Time
-                        graph: window.graph
-                    xAxis.render()
+                        graph: graph
 
                     yAxis = new Rickshaw.Graph.Axis.Y
-                        graph: window.graph
+                        graph: graph
                         orientation: 'left'
                         tickFormat: Rickshaw.Fixtures.Number.formatKMBT
                         element: document.getElementById('y-axis')
-                    yAxis.render()
 
-                    $('input').click (e) =>
-                        button = e.target
-                        if $(button).val() == 'Pause'
-                            @app.zappa.emit realtime: false
-                            $(button).val('Resume')
-                        else
-                            @app.zappa.emit realtime: true
-                            $(button).val('Pause')
+                    graph.render()
+
+                    $('input')
+                        .click(->
+                            button = $(@)
+
+                            if button.val() == 'Pause'
+                                zappa.emit realtime: false
+                                button.val('Resume')
+                            else
+                                zappa.emit realtime: true
+                                button.val('Pause'))
+                        .click()
 
         ).call @app
 
         @on
             data: ->
-                console.log @data
-                window.graph.series.addData @data
-                window.graph.render()
+                graph.series.addData @data
+                graph.render()
