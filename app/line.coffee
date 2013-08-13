@@ -1,78 +1,104 @@
 @include = ->
     @on realtime: (isOn) ->
         if isOn
-            emitData = => @emit data: {val: parseInt(Math.random() * 2000)}
-            @app.interval = setInterval(emitData, 500)
+            emitDatum = => @emit lineDatum: {val: parseInt(Math.random() * 2000)}
+            @app.interval = setInterval(emitDatum, 500)
         else
             clearInterval @app.interval
 
     @view line: ->
-        div id: 'chart-container', ->
-            div id: 'y-axis'
-            div id: 'chart'
         div id: 'buttons', ->
             input type: 'button', value: 'Resume'
+            span id: 'current-datum', 'data-bind': 'text: val'
+
+        div id: 'graph-container', ->
+            div id: 'y-axis'
+            div id: 'graph'
 
     @css '/line.css':
-        '#chart-container':
+        '#buttons':
+            marginBottom: '10px'
+
+        '#graph-container':
             position: 'relative'
             fontFamily: 'Arial, Helvetica, sans-serif'
+            height: '500px'
 
-        '#chart':
-            position: 'relative'
+        '#graph':
+            position: 'absolute'
+            top: 0
             left: '40px'
 
         '#y-axis':
             position: 'absolute'
             top: 0
-            bottom: 0
+            left: 0
             width: '40px'
 
     @client '/line.js': ->
-        graph = null
-        zappa = @
+        ko.extenders.updateSeries = (target, model) ->
+            target.subscribe (datum) ->
+                model.updateSeries(datum)
+            target
 
-        @connect()
+        class ViewModel
+            constructor: (@graphId, @yAxisId, @datumName) ->
+                @val = ko.observable()
+                @datum = ko.observable().extend
+                    updateSeries: @
 
-        @on data: ->
-            graph.series.addData @data
-            graph.render()
-
-        @get '#/': ->
-            $ =>
-                graph = new Rickshaw.Graph
-                    element: document.getElementById('chart')
+                @graph = new Rickshaw.Graph
+                    element: document.getElementById(@graphId)
                     width: 900
                     height: 500
                     renderer: 'line'
-                    series: new Rickshaw.Series.FixedDuration([{name: 'val'}], undefined, {
+                    series: new Rickshaw.Series.FixedDuration [{name: @datumName}], undefined,
                         timeInterval: 500,
                         maxDataPoints: 100
-                    })
-                graph.render()
 
                 xAxis = new Rickshaw.Graph.Axis.Time
-                    graph: graph
-                xAxis.render()
+                    graph: @graph
 
                 yAxis = new Rickshaw.Graph.Axis.Y
-                    graph: graph
+                    graph: @graph
                     orientation: 'left'
                     tickFormat: Rickshaw.Fixtures.Number.formatKMBT
-                    element: document.getElementById('y-axis')
-                yAxis.render()
+                    element: document.getElementById(@yAxisId)
 
+                @graph.render()
+
+            updateSeries: (datum) ->
+                @graph.series.addData datum
+                @graph.render()
+                @val(datum.val)
+
+        @connect()
+
+        zappa = @
+
+        @get '#/': =>
+            viewModel = new ViewModel('graph', 'y-axis', 'val')
+            ko.applyBindings viewModel
+
+            @on lineDatum: ->
+                viewModel.datum(@data)
+
+            $ ->
                 $('input')
-                    .click(->
+                    .click((e) ->
+                        console.log 'hereeeeeee'
+
                         button = $(@)
 
                         if button.val() == 'Pause'
+                            console.log 'here'
                             zappa.emit realtime: false
                             button.val('Resume')
                         else
+                            console.log 'here too:'
                             zappa.emit realtime: true
                             button.val('Pause'))
-                    .click()
+                    .trigger('click')
 
     @get '/line': ->
         @render line:
@@ -84,6 +110,8 @@
                 '/components/rickshaw/vendor/d3.layout.min.js',
                 '/components/rickshaw/rickshaw.min.js',
                 '/components/underscore/underscore-min.js',
+
+                '/components/knockout/build/output/knockout-latest.debug.js',
 
                 '/line.js',
             ]

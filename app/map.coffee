@@ -8,6 +8,7 @@ lorem = require 'lorem'
         '#map':
             height: '500px'
 
+    ###
     @on connection: ->
         emitValue = =>
             lat = 51.505 + (Math.random() * 0.5) - 0.25
@@ -17,6 +18,7 @@ lorem = require 'lorem'
                 lng: lng
                 info: lorem.ipsum('p')
         setInterval emitValue, 500
+    ###
 
     @client '/map.js': ->
         map = null
