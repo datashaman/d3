@@ -12,11 +12,14 @@
 
     popd
 
-### npm dependencies
-    npm install
+### [nodemon](http://remy.github.io/nodemon/)
+    sudo npm install -g nodemon
 
 ### [bower](http://bower.io/)
     sudo npm install -g bower
 
-### bower dependencies
+### server dependencies
+    npm install
+
+### client dependencies
     bower install
