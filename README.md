@@ -1,4 +1,4 @@
 d3
 ==
 
-Experiments with D3, ZappaJS and Leaflet.
+Experiments with ZappaJS, D3 and Leaflet.
