@@ -17,4 +17,4 @@ require('zappajs') ->
 
     @get '/', ->
         @render index:
-            title: 'Index'
+            title: 'Experiments'

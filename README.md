@@ -1,5 +1,5 @@
-d3
-==
+experiments
+===========
 
 Experiments with ZappaJS, D3 and Leaflet.
 
@@ -11,4 +11,4 @@ Experiments with ZappaJS, D3 and Leaflet.
 
     nodemon
 
-Open browser to [website](http://localhost:3000/)
+Open browser to [http://localhost:3000/](http://localhost:3000/).
