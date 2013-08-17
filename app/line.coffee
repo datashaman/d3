@@ -6,14 +6,25 @@
         else
             clearInterval @app.interval
 
-    @view line: ->
-        div id: 'buttons', ->
-            input type: 'button', value: 'Resume'
-            span id: 'current-datum', 'data-bind': 'text: val'
+    @get '/line': ->
+        @render line:
+            title: 'Line Graph'
+            scripts: [
+                '/zappa/Zappa.js',
 
-        div id: 'graph-container', ->
-            div id: 'y-axis'
-            div id: 'graph'
+                '/components/rickshaw/vendor/d3.min.js',
+                '/components/rickshaw/vendor/d3.layout.min.js',
+                '/components/rickshaw/rickshaw.min.js',
+                '/components/underscore/underscore-min.js',
+
+                '/components/knockout/build/output/knockout-latest.debug.js',
+
+                '/line.js',
+            ]
+            stylesheets: [
+                '/components/rickshaw/rickshaw.min.css',
+                '/line.css',
+            ]
 
     @css '/line.css':
         '#buttons':
@@ -34,6 +45,15 @@
             top: 0
             left: 0
             width: '40px'
+
+    @view line: ->
+        div id: 'buttons', ->
+            input type: 'button', value: 'Resume'
+            span id: 'current-datum', 'data-bind': 'text: val'
+
+        div id: 'graph-container', ->
+            div id: 'y-axis'
+            div id: 'graph'
 
     @client '/line.js': ->
         ko.extenders.updateSeries = (target, model) ->
@@ -85,37 +105,13 @@
 
             $ ->
                 $('input')
-                    .click((e) ->
-                        console.log 'hereeeeeee'
-
+                    .click(->
                         button = $(@)
 
                         if button.val() == 'Pause'
-                            console.log 'here'
                             zappa.emit realtime: false
                             button.val('Resume')
                         else
-                            console.log 'here too:'
                             zappa.emit realtime: true
                             button.val('Pause'))
                     .trigger('click')
-
-    @get '/line': ->
-        @render line:
-            title: 'Line Graph'
-            scripts: [
-                '/zappa/Zappa.js',
-
-                '/components/rickshaw/vendor/d3.min.js',
-                '/components/rickshaw/vendor/d3.layout.min.js',
-                '/components/rickshaw/rickshaw.min.js',
-                '/components/underscore/underscore-min.js',
-
-                '/components/knockout/build/output/knockout-latest.debug.js',
-
-                '/line.js',
-            ]
-            stylesheets: [
-                '/components/rickshaw/rickshaw.min.css',
-                '/line.css',
-            ]

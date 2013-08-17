@@ -1,17 +1,17 @@
 @include = ->
-    @get '/d3': ->
-        @render d3:
-            title: 'D3'
+    @get '/bar': ->
+        @render bar:
+            title: 'Bar Graph'
             scripts: [
                 '/zappa/Zappa.js',
                 '/components/d3/d3.js',
-                '/d3.js',
+                '/bar.js',
             ]
             stylesheets: [
-                '/d3.css',
+                '/bar.css',
             ]
 
-    @css '/d3.css':
+    @css '/bar.css':
         '.bar':
             display: 'inline-block'
             width: '20px'
@@ -19,9 +19,9 @@
             backgroundColor: 'teal'
             marginRight: '2px'
 
-    @view d3: ->
+    @view bar: ->
 
-    @client '/d3.js': ->
+    @client '/bar.js': ->
         @get '#/': ->
             dataset = [ 25, 7, 5, 26, 11, 8, 25, 14, 23, 19,
                         14, 11, 22, 29, 11, 13, 12, 17, 18, 10,

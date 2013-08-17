@@ -1,12 +1,5 @@
-lorem = require 'lorem'
-
 @include = ->
-    @view map: ->
-        div id: 'map'
-
-    @css '/map.css':
-        '#map':
-            height: '500px'
+    lorem = require 'lorem'
 
     @on connection: ->
         emitValue = =>
@@ -17,6 +10,28 @@ lorem = require 'lorem'
                 lng: lng
                 info: lorem.ipsum('p')
         setInterval emitValue, 500
+
+    @get '/map': ->
+        @render map:
+            title: 'Map'
+            scripts: [
+                '/zappa/Zappa.js',
+                '/components/leaflet/dist/leaflet.js',
+                '/components/knockout/build/output/knockout-latest.debug.js',
+                '/components/underscore/underscore-min.js',
+                '/map.js',
+            ]
+            stylesheets: [
+                '/components/leaflet/dist/leaflet.css',
+                '/map.css',
+            ]
+
+    @css '/map.css':
+        '#map':
+            height: '500px'
+
+    @view map: ->
+        div id: 'map'
 
     @client '/map.js': ->
         addModelSubscriber = (name) ->
@@ -51,18 +66,3 @@ lorem = require 'lorem'
 
             @on coords: ->
                 viewModel.data.push(@data)
-
-    @get '/map': ->
-        @render map:
-            title: 'Map'
-            scripts: [
-                '/zappa/Zappa.js',
-                '/components/leaflet/dist/leaflet.js',
-                '/components/knockout/build/output/knockout-latest.debug.js',
-                '/components/underscore/underscore-min.js',
-                '/map.js',
-            ]
-            stylesheets: [
-                '/components/leaflet/dist/leaflet.css',
-                '/map.css',
-            ]
