@@ -4,7 +4,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "components"
+    "bower_components"
   ],
   "dependencies": {
     "rickshaw": "~1.4.0",

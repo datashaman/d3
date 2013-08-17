@@ -35,9 +35,4 @@
     npm install jshint
     npm install uglify-js
     jake
-
-### start server
-    nodemon
-
-### open browser
-    sensible-browser http://localhost:3000/
+    popd
