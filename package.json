@@ -1,12 +1,12 @@
 {
-  "name": "datashaman-d3",
-  "description": "Experiments with D3",
+  "name": "datashaman-experiments",
+  "description": "Experiments with ZappaJS, D3 and Leaflet",
   "version": "0.1.0",
   "author": "Marlin Forbes <marlinf@datashaman.com>",
-  "homepage": "https://github.com/datashaman/d3",
+  "homepage": "https://github.com/datashaman/experiments",
   "repository": {
     "type": "git",
-    "url": "git://github.com/datashaman/d3.git"
+    "url": "git://github.com/datashaman/experiments.git"
   },
   "dependencies": {
     "zappajs": "0.4.x",
@@ -26,8 +26,10 @@
   ],
   "main": "app/main.coffee",
   "files": [
-    "app/main.coffee",
-    "app/line.coffee"
+    "app/",
+    "bower.json",
+    "INSTALL.md",
+    "README.md"
   ],
   "scripts": {
     "start": "coffee app/main.coffee"
