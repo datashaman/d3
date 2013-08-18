@@ -16,7 +16,8 @@
     "connect-redis": ">= 1.2.0",
     "jsdom": "~0.8.3",
     "zappajs-partials": "0.0.7",
-    "lorem": "~0.4.0"
+    "lorem": "~0.4.0",
+    "socket.io": "0.9.16"
   },
   "keywords": [
     "zappa",

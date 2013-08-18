@@ -1,15 +1,18 @@
-@include = ->
-    lorem = require 'lorem'
+lorem = require 'lorem'
 
-    @on connection: ->
-        emitValue = =>
-            lat = 51.505 + (Math.random() * 0.5) - 0.25
-            lng = -0.09 + (Math.random() * 0.5) - 0.25
-            @emit coords:
-                lat: lat
-                lng: lng
-                info: lorem.ipsum('p')
-        setInterval emitValue, 500
+@include = ->
+    @on generateMap: (enabled) ->
+        if enabled
+            emitValue = =>
+                lat = 51.505 + (Math.random() * 0.5) - 0.25
+                lng = -0.09 + (Math.random() * 0.5) - 0.25
+                @emit map:
+                    lat: lat
+                    lng: lng
+                    info: lorem.ipsum('p')
+            @interval = setInterval(emitValue, 500)
+        else
+            clearInterval @interval
 
     @get '/map': ->
         @render map:
@@ -34,15 +37,14 @@
         div id: 'map'
 
     @client '/map.js': ->
-        addModelSubscriber = (name) ->
-            ko.extenders[name] = (target, model) ->
-                target.subscribe (data) ->
-                    model[name](data)
-                target
+        viewModel = null
+
+        ko.extenders.addMarker = (target, model) ->
+            target.subscribe (data) -> model.addMarker(data)
+            target
 
         class ViewModel
             constructor: (@mapId, @apiKey) ->
-                addModelSubscriber 'addMarker'
                 @data = ko.observableArray([]).extend({ addMarker: @ })
 
                 @map = L.map(@mapId).setView([51.505, -0.09], 10)
@@ -60,9 +62,10 @@
 
         @connect()
 
+        @on map: ->
+            viewModel.data.push(@data)
+
         @get '#/': =>
             viewModel = new ViewModel('map', '46d8b39e9b6f4ab5a6118e74cf1da50d')
             ko.applyBindings viewModel
-
-            @on coords: ->
-                viewModel.data.push(@data)
+            @emit generateMap: true

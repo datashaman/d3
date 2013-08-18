@@ -1,8 +1,12 @@
-require('zappajs') ->
+require('zappajs') {
+    io: {
+        # 'force new connection': true
+    }
+}, ->
     @include 'config'
 
-    @include 'line'
     @include 'map'
+    @include 'line'
     @include 'bar'
     @include 'circles'
     @include 'svg'

@@ -1,10 +1,12 @@
 @include = ->
-    @on realtime: (isOn) ->
-        if isOn
-            emitDatum = => @emit lineDatum: {val: parseInt(Math.random() * 2000)}
-            @app.interval = setInterval(emitDatum, 500)
+    @on generateLine: (enabled) ->
+        if enabled
+            emitDatum = =>
+                @emit line:
+                    val: parseInt(Math.random() * 2000)
+            @interval = setInterval(emitDatum, 500)
         else
-            clearInterval @app.interval
+            clearInterval @interval
 
     @get '/line': ->
         @render line:
@@ -56,9 +58,10 @@
             div id: 'graph'
 
     @client '/line.js': ->
+        viewModel = null
+
         ko.extenders.updateSeries = (target, model) ->
-            target.subscribe (datum) ->
-                model.updateSeries(datum)
+            target.subscribe (datum) -> model.updateSeries(datum)
             target
 
         class ViewModel
@@ -94,14 +97,14 @@
 
         @connect()
 
-        zappa = @
+        @on line: ->
+            viewModel.datum(@data)
+
+        emit = @emit
 
         @get '#/': =>
             viewModel = new ViewModel('graph', 'y-axis', 'val')
             ko.applyBindings viewModel
-
-            @on lineDatum: ->
-                viewModel.datum(@data)
 
             $ ->
                 $('input')
@@ -109,9 +112,10 @@
                         button = $(@)
 
                         if button.val() == 'Pause'
-                            zappa.emit realtime: false
+                            emit generateLine: false
                             button.val('Resume')
                         else
-                            zappa.emit realtime: true
-                            button.val('Pause'))
-                    .trigger('click')
+                            emit generateLine: true
+                            button.val('Pause')
+                        false)
+                    .click()
