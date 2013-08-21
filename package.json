@@ -41,5 +41,8 @@
   },
   "publishConfig": {
     "tag": "latest"
+  },
+  "devDependencies": {
+    "mocha": "~1.12.0"
   }
 }
