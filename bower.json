@@ -12,6 +12,7 @@
     "leaflet": "~0.6.4",
     "lorem": "latest",
     "d3": "~3.2.8",
-    "knockout": "v3.0.0beta"
+    "knockout": "v3.0.0beta",
+    "jquery-ui": "~1.10.3"
   }
 }

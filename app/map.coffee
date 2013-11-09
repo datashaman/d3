@@ -1,7 +1,7 @@
 lorem = require 'lorem'
 
 @include = ->
-    @locals.navigation['/map'] = 'Map'
+    @settings.navigation['/map'] = 'Map'
 
     @on generateMap: (enabled) ->
         if enabled
@@ -20,9 +20,8 @@ lorem = require 'lorem'
         @render map:
             title: 'Map'
             scripts: [
-                '/zappa/Zappa.js'
                 '/components/leaflet/dist/leaflet.js'
-                '/components/knockout/build/output/knockout-latest.debug.js'
+                '/components/knockout/build/output/knockout-latest.js'
                 '/components/underscore/underscore-min.js'
                 '/map.js'
             ]
@@ -40,6 +39,11 @@ lorem = require 'lorem'
 
     @client '/map.js': ->
         viewModel = null
+
+        @connect()
+
+        @on map: ->
+            viewModel.data.push(@data)
 
         class ViewModel
             constructor: (@mapId, @apiKey) ->
@@ -61,12 +65,7 @@ lorem = require 'lorem'
                     .addTo(@map)
                     .bindPopup(datum.info)
 
-        @connect()
+        viewModel = new ViewModel('map', '46d8b39e9b6f4ab5a6118e74cf1da50d')
+        ko.applyBindings viewModel
 
-        @on map: ->
-            viewModel.data.push(@data)
-
-        @get '#/': =>
-            viewModel = new ViewModel('map', '46d8b39e9b6f4ab5a6118e74cf1da50d')
-            ko.applyBindings viewModel
-            @emit generateMap: true
+        @emit generateMap: true

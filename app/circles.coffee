@@ -1,11 +1,10 @@
 @include = ->
-    @locals.navigation['/circles'] = 'Circles'
+    @settings.navigation['/circles'] = 'Circles'
 
     @get '/circles': ->
         @render circles:
             title: 'Circles'
             scripts: [
-                '/zappa/Zappa.js'
                 '/components/d3/d3.js'
                 '/circles.js'
             ]
@@ -21,23 +20,22 @@
         w = 500
         h = 50
 
-        @get '#/': ->
-            svg = d3.select('body')
-                .append('svg')
-                .attr('width', w)
-                .attr('height', h)
+        svg = d3.select('body')
+            .append('svg')
+            .attr('width', w)
+            .attr('height', h)
 
-            dataset = [ 5, 10, 15, 20, 25]
+        dataset = [ 5, 10, 15, 20, 25]
 
-            circles = svg.selectAll('circle')
-                .data(dataset)
-                .enter()
-                .append('circle')
+        circles = svg.selectAll('circle')
+            .data(dataset)
+            .enter()
+            .append('circle')
 
-            circles.attr
-                cx: (d, i) -> i * 50 + 25
-                cy: -> h/2
-                r: (d) -> d
-                fill: 'yellow'
-                stroke: 'orange'
-                'stroke-width': (d) -> d/2
+        circles.attr
+            cx: (d, i) -> i * 50 + 25
+            cy: -> h/2
+            r: (d) -> d
+            fill: 'yellow'
+            stroke: 'orange'
+            'stroke-width': (d) -> d/2
