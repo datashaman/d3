@@ -5,6 +5,8 @@ require('zappajs') {
 }, ->
     @include 'config'
 
+    @locals.navigation = []
+
     @include 'map'
     @include 'line'
     @include 'bar'
@@ -12,12 +14,9 @@ require('zappajs') {
     @include 'svg'
 
     @view index: ->
-        ul id: 'links', ->
-            li -> a href: '/line', -> 'Realtime Line Graph'
-            li -> a href: '/map', -> 'Map'
-            li -> a href: '/bar', -> 'Bar Graph'
-            li -> a href: '/circles', -> 'Circles'
-            li -> a href: '/svg', -> 'SVG'
+        ul id: 'navigation', ->
+            for url, title of @navigation
+                li -> a href: url + '#/', -> title
 
     @get '/', ->
         @render index:

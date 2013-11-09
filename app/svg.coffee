@@ -1,14 +1,16 @@
 @include = ->
+    @locals.navigation['/svg'] = 'SVG'
+
     @get '/svg': ->
         @render svg:
             title: 'SVG'
             scripts: [
-                '/zappa/Zappa.js',
-                '/components/d3/d3.js',
-                '/svg.js',
+                '/zappa/Zappa.js'
+                '/components/d3/d3.js'
+                '/svg.js'
             ]
             stylesheets: [
-                '/svg.css',
+                '/svg.css'
             ]
 
     @css '/svg.css': ->

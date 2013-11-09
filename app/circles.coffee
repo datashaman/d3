@@ -1,14 +1,16 @@
 @include = ->
+    @locals.navigation['/circles'] = 'Circles'
+
     @get '/circles': ->
         @render circles:
             title: 'Circles'
             scripts: [
-                '/zappa/Zappa.js',
-                '/components/d3/d3.js',
-                '/circles.js',
+                '/zappa/Zappa.js'
+                '/components/d3/d3.js'
+                '/circles.js'
             ]
             stylesheets: [
-                '/circles.css',
+                '/circles.css'
             ]
 
     @css '/circles.css': ->
@@ -32,10 +34,10 @@
                 .enter()
                 .append('circle')
 
-            circles.attr(
+            circles.attr
                 cx: (d, i) -> i * 50 + 25
                 cy: -> h/2
                 r: (d) -> d
                 fill: 'yellow'
                 stroke: 'orange'
-                'stroke-width': (d) -> d/2)
+                'stroke-width': (d) -> d/2

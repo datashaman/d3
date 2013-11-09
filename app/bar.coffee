@@ -1,4 +1,6 @@
 @include = ->
+    @locals.navigation['/bar'] = 'Bar Graph'
+
     @get '/bar': ->
         @render bar:
             title: 'Bar Graph'

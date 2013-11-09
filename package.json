@@ -33,7 +33,7 @@
     "README.md"
   ],
   "scripts": {
-    "start": "coffee app/main.coffee"
+    "start": "nodemon app/main.coffee"
   },
   "engines": {
     "node": ">=0.8.x",

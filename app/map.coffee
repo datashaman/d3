@@ -1,6 +1,8 @@
 lorem = require 'lorem'
 
 @include = ->
+    @locals.navigation['/map'] = 'Map'
+
     @on generateMap: (enabled) ->
         if enabled
             emitValue = =>
@@ -18,15 +20,15 @@ lorem = require 'lorem'
         @render map:
             title: 'Map'
             scripts: [
-                '/zappa/Zappa.js',
-                '/components/leaflet/dist/leaflet.js',
-                '/components/knockout/build/output/knockout-latest.debug.js',
-                '/components/underscore/underscore-min.js',
-                '/map.js',
+                '/zappa/Zappa.js'
+                '/components/leaflet/dist/leaflet.js'
+                '/components/knockout/build/output/knockout-latest.debug.js'
+                '/components/underscore/underscore-min.js'
+                '/map.js'
             ]
             stylesheets: [
-                '/components/leaflet/dist/leaflet.css',
-                '/map.css',
+                '/components/leaflet/dist/leaflet.css'
+                '/map.css'
             ]
 
     @css '/map.css':
@@ -39,13 +41,12 @@ lorem = require 'lorem'
     @client '/map.js': ->
         viewModel = null
 
-        ko.extenders.addMarker = (target, model) ->
-            target.subscribe (data) -> model.addMarker(data)
-            target
-
         class ViewModel
             constructor: (@mapId, @apiKey) ->
-                @data = ko.observableArray([]).extend({ addMarker: @ })
+                @data = ko.observableArray([])
+
+                @data.subscribe (data) =>
+                    @addMarker(data)
 
                 @map = L.map(@mapId).setView([51.505, -0.09], 10)
 

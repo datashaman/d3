@@ -1,4 +1,6 @@
 @include = ->
+    @locals.navigation['/line'] = 'Realtime Line Graph'
+
     @on generateLine: (enabled) ->
         if enabled
             emitDatum = =>
@@ -12,20 +14,20 @@
         @render line:
             title: 'Line Graph'
             scripts: [
-                '/zappa/Zappa.js',
+                '/zappa/Zappa.js'
 
-                '/components/rickshaw/vendor/d3.min.js',
-                '/components/rickshaw/vendor/d3.layout.min.js',
-                '/components/rickshaw/rickshaw.min.js',
-                '/components/underscore/underscore-min.js',
+                '/components/rickshaw/vendor/d3.min.js'
+                '/components/rickshaw/vendor/d3.layout.min.js'
+                '/components/rickshaw/rickshaw.min.js'
+                '/components/underscore/underscore-min.js'
 
-                '/components/knockout/build/output/knockout-latest.debug.js',
+                '/components/knockout/build/output/knockout-latest.debug.js'
 
-                '/line.js',
+                '/line.js'
             ]
             stylesheets: [
-                '/components/rickshaw/rickshaw.min.css',
-                '/line.css',
+                '/components/rickshaw/rickshaw.min.css'
+                '/line.css'
             ]
 
     @css '/line.css':
@@ -60,15 +62,13 @@
     @client '/line.js': ->
         viewModel = null
 
-        ko.extenders.updateSeries = (target, model) ->
-            target.subscribe (datum) -> model.updateSeries(datum)
-            target
-
         class ViewModel
             constructor: (@graphId, @yAxisId, @datumName) ->
                 @val = ko.observable()
-                @datum = ko.observable().extend
-                    updateSeries: @
+                @datum = ko.observable()
+
+                @datum.subscribe (datum) =>
+                    @updateSeries datum
 
                 @graph = new Rickshaw.Graph
                     element: document.getElementById(@graphId)
