@@ -23,10 +23,12 @@
 
                 '/line.js'
             ]
-            stylesheets: [
-                '/components/rickshaw/rickshaw.min.css'
-                '/line.css'
-            ]
+            stylesheets: {
+                'screen, projection': [
+                    '/components/rickshaw/rickshaw.min.css'
+                    '/line.css'
+                ]
+            }
 
     @css '/line.css':
         '#buttons':

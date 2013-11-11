@@ -25,10 +25,12 @@ lorem = require 'lorem'
                 '/components/underscore/underscore-min.js'
                 '/map.js'
             ]
-            stylesheets: [
-                '/components/leaflet/dist/leaflet.css'
-                '/map.css'
-            ]
+            stylesheets: {
+                'screen, projection': [
+                    '/components/leaflet/dist/leaflet.css'
+                    '/map.css'
+                ]
+            }
 
     @css '/map.css':
         '#map':

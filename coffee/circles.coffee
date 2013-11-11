@@ -8,9 +8,11 @@
                 '/components/d3/d3.js'
                 '/circles.js'
             ]
-            stylesheets: [
-                '/circles.css'
-            ]
+            stylesheets: {
+                'screen, projector': [
+                    '/circles.css'
+                ]
+            }
 
     @css '/circles.css': ->
 
@@ -20,7 +22,7 @@
         w = 500
         h = 50
 
-        svg = d3.select('body')
+        svg = d3.select('article')
             .append('svg')
             .attr('width', w)
             .attr('height', h)

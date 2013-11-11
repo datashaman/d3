@@ -6,9 +6,11 @@
                 '/components/d3/d3.js'
                 '/d3.js'
             ]
-            stylesheets: [
-                '/d3.css'
-            ]
+            stylesheets: {
+                'screen, projection': [
+                    '/d3.css'
+                ]
+            }
 
     @css '/d3.css':
         '.bar':

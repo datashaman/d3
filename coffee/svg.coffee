@@ -9,9 +9,11 @@
                 '/components/d3/d3.js'
                 '/svg.js'
             ]
-            stylesheets: [
-                '/svg.css'
-            ]
+            stylesheets: {
+                'screen, projection': [
+                    '/svg.css'
+                ]
+            }
 
     @css '/svg.css': ->
 
@@ -21,7 +23,7 @@
         w = 500
         h = 50
 
-        svg = d3.select('body')
+        svg = d3.select('article')
             .append('svg')
             .attr('width', w)
             .attr('height', h)

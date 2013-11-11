@@ -6,13 +6,15 @@
             title: 'Bar Graph'
             scripts: [
                 '/components/d3/d3.js',
-                '/bar.js',
+                '/scripts/bar.js',
             ]
-            stylesheets: [
-                '/bar.css',
-            ]
+            stylesheets: {
+                'screen, projection': [
+                    '/stylesheets/bar.css'
+                ]
+            }
 
-    @css '/bar.css':
+    @css '/stylesheets/bar.css':
         '.bar':
             display: 'inline-block'
             width: '20px'
@@ -21,13 +23,16 @@
             marginRight: '2px'
 
     @view bar: ->
+        div id: 'bar'
 
-    @client '/bar.js': ->
+    @client '/scripts/bar.js': ->
+        @connect()
+
         dataset = [ 25, 7, 5, 26, 11, 8, 25, 14, 23, 19,
                     14, 11, 22, 29, 11, 13, 12, 17, 18, 10,
                     24, 18, 25, 9, 3 ]
 
-        d3.select('body').selectAll('div')
+        d3.select('#bar').selectAll('div')
             .data(dataset)
             .enter()
             .append('div')

@@ -6,13 +6,17 @@ redis = require 'connect-redis'
             '/zappa/Zappa.js'
             '//code.jquery.com/ui/1.10.3/jquery-ui.min.js'
             '//cdnjs.cloudflare.com/ajax/libs/knockout/3.0.0/knockout-min.js'
+            '/scripts/site.js'
         ]
-        stylesheets: [
-            '//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'
-        ]
+        stylesheets: {
+            'screen, projection': [
+                '//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'
+                '/stylesheets/screen.css'
+            ]
+        }
 
 
-    @use 'partials', 'bodyParser', 'methodOverride', 'static', 'cookieParser'
+    @use 'partials', 'bodyParser', 'methodOverride', static: __dirname + '/../public', 'cookieParser'
 
     RedisStore = redis(@express)
     @use session:

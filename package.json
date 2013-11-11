@@ -25,15 +25,19 @@
     "d3",
     "leaflet"
   ],
-  "main": "app/main.coffee",
+  "main": "coffee/main.coffee",
   "files": [
-    "app/",
+    "coffee/",
+    "public/",
+    "sass/",
+    "test/",
     "bower.json",
+    "config.rb",
     "INSTALL.md",
     "README.md"
   ],
   "scripts": {
-    "start": "nodemon app/main.coffee"
+    "start": "nodemon coffee/main.coffee"
   },
   "engines": {
     "node": ">=0.8.x",

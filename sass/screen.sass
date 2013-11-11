@@ -1,0 +1,19 @@
+// ---------------------------------------------------------------------------
+// Imports
+
+@import compass/reset
+@import compass/utilities
+@import compass/layout/sticky-footer
+@import base
+
+@include sticky-footer(54px)
+
+/* -------------------------------------------------------------------------
+/* Layout
+
+#root, #footer
+  +container
+  +susy-grid-background
+
+header nav
+  +inline-block-list(20px)
